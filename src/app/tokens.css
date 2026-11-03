@@ -1,0 +1,42 @@
+/*
+ * The Rouché Café design tokens
+ * Source of truth for colors, type scale, spacing and motion.
+ * Phase 2: mapped from the supplied green / gold / cream reference pages.
+ */
+:root {
+  color-scheme: light;
+  --forest: #003f29;
+  --forest-dark: #002f1f;
+  --forest-deep: #002619;
+  --gold: #c88924;
+  --gold-light: #f1b84b;
+  --cream: #fff8ef;
+  --cream2: #f9efe3;
+  --ink: #062e20;
+  --muted: #4c574e;
+  --border: #ead8c7;
+  --shadow: 0 8px 24px rgba(76, 40, 13, .07);
+
+  --surface: var(--cream);
+  --surface-raised: #fffaf3;
+  --surface-dark: var(--forest-dark);
+  --text-on-dark: #fff9ed;
+  --gold-outline: #be913e;
+  --font-body: "DM Sans", Arial, sans-serif;
+  --font-heading: "Cormorant Garamond", Georgia, serif;
+  --font-script: "Great Vibes", "Brush Script MT", cursive;
+  --radius-sm: 9px;
+  --radius-card: 14px;
+  --radius-pill: 999px;
+  --header-height: 86px;
+  --page-max-width: 1420px;
+  --focus-ring: 3px solid var(--gold);
+  --motion-fast: 180ms;
+  --motion-normal: 260ms;
+}
+@media (max-width: 950px) {
+  :root { --header-height: 76px; }
+}
+@media (max-width: 680px) {
+  :root { --header-height: 70px; }
+}

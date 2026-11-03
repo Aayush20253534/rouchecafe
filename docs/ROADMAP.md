@@ -1,7 +1,7 @@
 # Implementation roadmap
 
 1. **Project setup and architecture** — App Router, strict TypeScript, Tailwind utility integration, shared configuration, route validation, CI, documentation.
-2. **Design system and shared UI** — colors, typography, reusable visual components, mobile navigation, header and footer refinement.
+2. **Design system and shared UI (implemented)** — colors, typography, reusable visual components, mobile navigation, header and footer refinement.
 3. **Home and About** — reproduce the supplied mockups using confirmed branding and visuals.
 4. **Menu and product system** — install the owner's actual menu and product imagery; search/filter/cart presentation.
 5. **Cart, checkout and WhatsApp orders** — finalize approved payment and fulfilment rules and order handoff.

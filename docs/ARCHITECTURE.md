@@ -36,3 +36,7 @@ Home (/), About (/about), Menu (/menu), Reservation (/reservation), Gallery (/ga
 ## UI and code safety
 
 Custom CSS remains the primary style layer until the design-system phase. Tailwind utilities are enabled without resetting global element defaults. The project currently uses a single client-side shared site component; breaking it into feature components is a later refactor and is not implied by this setup phase.
+
+## Phase 2 layout and theme
+
+Shared branding and navigation components are now under `src/components/layout` and `src/components/ui`; see `docs/DESIGN_SYSTEM.md`. The visual tokens are centralized in `src/app/tokens.css`. The existing feature implementations in `CafeSite.tsx` remain intact.

@@ -12,44 +12,12 @@ import {
   Info, ClipboardList, Flame, Sandwich, BookOpen
 } from "lucide-react";
 import { CAFE, PHOTOS, categories, menu, money, waLink, type MenuItem } from "@/lib/site";
+import { SiteHeader } from "@/components/layout/SiteHeader";
+import { SiteFooter } from "@/components/layout/SiteFooter";
+import { Pill, SectionHeading, Photo, Hero, FeatureStrip, OpenWhatsApp, ButtonLink } from "@/components/ui/CafePrimitives";
 
 type Cart = Record<string, number>;
-const nav = [
-  { href:"/",label:"Home" }, { href:"/about",label:"About" },
-  { href:"/menu",label:"Menu" }, { href:"/reservation",label:"Reservation" },
-  { href:"/gallery",label:"Gallery" }, { href:"/blog",label:"Blog" },
-  { href:"/contact",label:"Contact" }
-];
 
-function Logo({footer=false}:{footer?:boolean}) {
-  return <Link href="/" aria-label="The Rouché Café homepage" className={"logo " + (footer ? "logo-light" : "")}>
-    <img src="/rouche-logo.webp" alt="The Rouché Café logo" className="logo-asset"/>
-  </Link>;
-}
-function Pill({children,className=""}:{children:React.ReactNode;className?:string}) {
-  return <span className={"section-pill "+className}>{children}</span>;
-}
-function SectionHeading({eyebrow,title}:{eyebrow:string;title:string}) {
-  return <div className="section-title"><span className="overline">{eyebrow}</span><h2>{title}</h2><span className="bean-divider">◆</span></div>;
-}
-function Photo({src,alt,className="",loading="lazy"}:{src:string;alt:string;className?:string;loading?:"eager"|"lazy"}) {
-  return <img src={src} alt={alt} className={className} loading={loading} referrerPolicy="no-referrer" />;
-}
-function Hero({eyebrow,title,description,image,children,center=false}:{eyebrow:string;title:string;description:string;image:string;children?:React.ReactNode;center?:boolean}) {
-  return <section className={"hero "+(center?"hero-center":"")}>
-    <div className="hero-copy flourish"><span className="script">{eyebrow}</span><h1>{title}</h1><span className="hero-rule">◆</span><p>{description}</p>{children && <div className="hero-actions">{children}</div>}</div>
-    <div className="hero-image"><Photo src={image} alt="Café atmosphere" loading="eager"/></div>
-  </section>;
-}
-function FeatureStrip({features}:{features:{icon:React.ReactNode;title:string;desc:string}[]}) {
-  return <div className="feature-strip">{features.map((f,i)=><div className="feature" key={i}><span className="feature-icon">{f.icon}</span><div><strong>{f.title}</strong><small>{f.desc}</small></div></div>)}</div>;
-}
-function OpenWhatsApp({message,children,className=""}:{message:string;children:React.ReactNode;className?:string}) {
-  return <a className={className || "btn btn-green"} target="_blank" rel="noopener noreferrer" href={waLink(message)}>{children}</a>;
-}
-function ButtonLink({href,children,light=false}:{href:string;children:React.ReactNode;light?:boolean}) {
-  return <Link className={"btn "+(light?"btn-outline":"btn-green")} href={href}>{children}</Link>;
-}
 function ProductCard({item,add,compact=false}:{item:MenuItem;add:(id:string)=>void;compact?:boolean}) {
   const [liked,setLiked]=useState(false);
   return <article className={"product-card "+(compact?"compact":"")}>
@@ -207,14 +175,6 @@ function Checkout({cart,clear}:{cart:Cart;clear:()=>void}) {
 function Blog(){
   return <><Hero eyebrow="From Our Café" title="Stories & Sips" description="A space for coffee stories, café updates, seasonal favourites and the moments that make The Rouché special." image={PHOTOS.cafe}/><section className="section page-width blog-content"><SectionHeading eyebrow="THE CAFÉ JOURNAL" title="Something Wonderful Is Brewing"/><div className="blog-intro"><Coffee size={44}/><h3>Our journal is coming soon</h3><p>We&apos;ll share real café stories, news, seasonal menus and celebrations here once the content is ready.</p><ButtonLink href="/gallery">EXPLORE GALLERY <ArrowRight size={16}/></ButtonLink></div></section></>;
 }
-function Header({count}:{count:number}) {
-  const pathname=usePathname();const [mobile,setMobile]=useState(false);
-  useEffect(()=>setMobile(false),[pathname]);
-  return <header className="site-header"><div className="header-inner page-width"><Logo/><nav className={mobile?"nav-links open":"nav-links"} aria-label="Primary navigation">{nav.map(x=><Link key={x.href} href={x.href} className={pathname===x.href?"active":""}>{x.label}</Link>)}</nav><div className="header-actions"><Link href="/reservation" className="book-button"><Armchair size={18}/> BOOK A TABLE</Link><Link href="/cart" className="cart-icon" aria-label={"Cart, "+count+" items"}><ShoppingCart size={25}/>{count>0&&<span>{count}</span>}</Link><button className="mobile-toggle" onClick={()=>setMobile(v=>!v)} aria-label={mobile?"Close menu":"Open menu"}>{mobile?<X/>:<MenuIcon/>}</button></div></div></header>;
-}
-function Footer(){
-  return <footer className="site-footer"><div className="page-width footer-main"><div className="footer-brand"><Logo footer/><em>{CAFE.tagline}</em><div className="social-links"><a href={waLink("Hello The Rouché Café.")} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><MessageCircle size={17}/></a><a href={CAFE.mapUrl} target="_blank" rel="noopener noreferrer" aria-label="Google Maps"><MapPin size={17}/></a></div></div><div><h3>QUICK LINKS</h3>{nav.map(x=><Link href={x.href} key={x.href}>{x.label}</Link>)}</div><div><h3>VISITING HOURS</h3><p>Opening hours will be updated after confirmation by the café.</p><OpenWhatsApp message="Hello The Rouché Café, could you confirm your opening hours?" className="footer-chat">Confirm hours via WhatsApp</OpenWhatsApp></div><div><h3>CONTACT US</h3><p><MapPin size={17}/> {CAFE.location}</p><p><Phone size={17}/> <a href={"tel:+"+CAFE.whatsapp}>{CAFE.displayPhone}</a></p><p><MessageCircle size={17}/> <a href={waLink("Hello The Rouché Café.")} target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a></p></div><div className="storefront"><Coffee size={70}/><span>THE ROUCHÉ CAFÉ</span></div></div><div className="footer-bottom page-width"><small>© {new Date().getFullYear()} The Rouché Café. All rights reserved.</small><span><Link href="/contact">Privacy enquiries</Link><span className="footer-line">|</span><Link href="/contact">Terms enquiries</Link></span></div></footer>;
-}
 export default function CafeSite() {
   const pathname=usePathname();
   const [cart,setCart]=useState<Cart>({});const [hydrated,setHydrated]=useState(false);const [toast,setToast]=useState("");
@@ -232,5 +192,5 @@ export default function CafeSite() {
     cart:<CartPage cart={cart} change={change} clear={clear} add={add}/>,
     checkout:<Checkout cart={cart} clear={clear}/>,blog:<Blog/>
   };
-  return <><Header count={count}/><main id="main">{current[route]||<section className="section page-width not-found"><h1>Page not found</h1><ButtonLink href="/">RETURN HOME</ButtonLink></section>}</main><Footer/>{toast&&<div className="cart-toast" role="status"><CheckCircle2 size={18}/>{toast}<Link href="/cart">View cart</Link></div>}</>;
+  return <><SiteHeader cartCount={count}/><main id="main">{current[route]||<section className="section page-width not-found"><h1>Page not found</h1><ButtonLink href="/">RETURN HOME</ButtonLink></section>}</main><SiteFooter/>{toast&&<div className="cart-toast" role="status"><CheckCircle2 size={18}/>{toast}<Link href="/cart">View cart</Link></div>}</>;
 }
