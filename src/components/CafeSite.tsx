@@ -23,8 +23,7 @@ const nav = [
 
 function Logo({footer=false}:{footer?:boolean}) {
   return <Link href="/" aria-label="The Rouché Café homepage" className={"logo " + (footer ? "logo-light" : "")}>
-    <span className="logo-mark"><span className="logo-steam">♨</span>TRC</span>
-    <span className="logo-caption">THE ROUCHÉ CAFÉ</span>
+    <img src="/rouche-logo.webp" alt="The Rouché Café logo" className="logo-asset"/>
   </Link>;
 }
 function Pill({children,className=""}:{children:React.ReactNode;className?:string}) {
