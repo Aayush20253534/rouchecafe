@@ -31,7 +31,7 @@ export function HomePage() {
         { icon: <Heart />, title: "MADE WITH LOVE", desc: "Quality ingredients and heartfelt service" },
       ]}/>
 
-      <section className="section page-width trc-signature" aria-labelledby="trc-signature-title">
+      <section className="section page-width trc-signature" aria-label="Signature menu preview">
         <SectionHeading eyebrow="OUR SIGNATURE MENU" title="Crafted to Perfection" />
         <Link href="/menu" className="trc-section-action">
           VIEW FULL MENU <ArrowRight size={17} aria-hidden="true" />
