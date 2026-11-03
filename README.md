@@ -76,3 +76,8 @@ Both the full reservation page and the homepage booking form now prepare validat
 ## Phase 7: Gallery, Blog and Contact
 
 The branded gallery has filters and keyboard-accessible photo previews. The Blog is ready for approved real content, but intentionally publishes no placeholder articles. Contact enquiries open a prefilled WhatsApp message after review, and the supplied exact Google Maps location is linked. An iframe requires an optional verified embed URL; see [Phase 7 content guide](docs/PHASE7_CONTENT.md).
+
+
+## Phase 8: SEO, performance and quality checks
+
+Prayagraj-targeted page metadata, verified-business JSON-LD, crawl guards and sitemap rules are implemented. The website uses Next image optimization and enhanced keyboard/touch behavior. Run \`npm run typecheck\`, \`npm test\`, \`npm run build\`, then \`npm run smoke\` to verify production routes and SEO. Full browser and real-device checks remain required before launch. See [Phase 8 quality guide](docs/PHASE8_QA.md). Set \`NEXT_PUBLIC_SITE_URL\` to an actual HTTPS production origin to enable indexing of verified public pages.

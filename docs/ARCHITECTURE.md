@@ -71,3 +71,10 @@ The dedicated \`ReservationPage.tsx\` and homepage \`QuickTableRequest.tsx\` sha
 ## Phase 7: Gallery, Blog and Contact
 
 Dedicated page components for Gallery, Blog and Contact now live in \`src/components/pages/\`. Typed content is separated into \`src/data/gallery.ts\` and \`src/data/blog.ts\`. WhatsApp contact validation and safe optional Google Maps embedding are in \`src/lib/contact.ts\`, while verified social profile links belong to \`src/lib/social.ts\`. Scoped styling is in \`src/app/showcase.css\`. See \`docs/PHASE7_CONTENT.md\` for content replacement and launch limitations.
+
+
+## Phase 8: SEO, accessibility, responsive QA
+
+Page-level metadata is generated in \`src/app/[[...slug]]/page.tsx\` using \`src/lib/seo.ts\` and verified café details from \`src/lib/site.ts\`. The root layout embeds minimal JSON-LD data. Both \`robots.ts\` and \`sitemap.ts\` are computed from a validated HTTPS production URL and indexing rules (noindex while menu/photos/blog are unverified).
+
+\`src/components/ui/CafePrimitives.tsx\` now uses responsive Next image optimization. Mobile navigation focus and scroll behavior live in \`SiteHeader.tsx\`; responsive overrides are in \`src/app/quality.css\`. The CI job includes production-route HTTP smoke testing via \`scripts/smoke-test.mjs\`. See \`docs/PHASE8_QA.md\`.
