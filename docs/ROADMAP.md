@@ -8,7 +8,7 @@
 6. **Reservations (implemented)** — full booking form, shared homepage request, validated IST date and preferred time, guest count, special requests, review and WhatsApp handoff. Café confirms manually; no live availability API.
 7. **Gallery, blog and contact (implemented with content placeholders)** — responsive filtered gallery and lightbox, blog-ready structure without invented posts, validated WhatsApp enquiry, direct supplied Maps link and optional verified embed. Official images, posts, exact street address, hours and social handles still require client data.
 8. **Responsiveness, SEO and testing (implemented; browser QA pending)** — responsive styling, next/image optimization, mobile keyboard navigation, Prayagraj SEO, truthful local schema, safe sitemap/robots, functional tests and production HTTP smoke checks. Real-device visual QA remains for Phase 9.
-9. **GitHub integration and deployment** — verify passing checks and deploy to Vercel.
+9. **GitHub integration and Vercel deployment (implemented)** — connect `ayush-jha-NIT/rouchecafe` to Vercel project `rouchecafe`, deploy `main` to https://rouchecafe.vercel.app, configure Next.js and Node 22, set a verified canonical production origin, retain preview protection, and check CI. Client content sign-off and real-device QA remain outstanding.
 
 ## Current scope
 

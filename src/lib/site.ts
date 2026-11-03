@@ -5,7 +5,7 @@ export const CAFE = {
   displayPhone: "+91 99357 54959",
   mapUrl: "https://maps.app.goo.gl/hFJA5p2F91QixMgQ7",
   location: "Prayagraj, Uttar Pradesh",
-  // Set true only after the owner confirms actual dishes, prices, and availability.
+  // Keep true until the owner confirms the actual menu, prices and fulfilment.
   demoMenu: true
 } as const;
 

@@ -56,7 +56,7 @@ The cart uses localStorage, not a database. There is no payment gateway. The caf
 
 GitHub Actions runs TypeScript, menu-logic tests and production build checks on pushes to main and pull requests.
 
-Import this repository into Vercel as a Next.js project. No database or server secrets are required for the current static/WhatsApp-first version.
+The repository is linked to a Vercel Next.js project, which deploys the production branch automatically. No database or server secrets are required for the current static/WhatsApp-first version. See [Phase 9 deployment](docs/PHASE9_DEPLOYMENT.md).
 
 ## Menu system
 
@@ -81,3 +81,7 @@ The branded gallery has filters and keyboard-accessible photo previews. The Blog
 ## Phase 8: SEO, performance and quality checks
 
 Prayagraj-targeted page metadata, verified-business JSON-LD, crawl guards and sitemap rules are implemented. The website uses Next image optimization and enhanced keyboard/touch behavior. Run \`npm run typecheck\`, \`npm test\`, \`npm run build\`, then \`npm run smoke\` to verify production routes and SEO. Full browser and real-device checks remain required before launch. See [Phase 8 quality guide](docs/PHASE8_QA.md). Set \`NEXT_PUBLIC_SITE_URL\` to an actual HTTPS production origin to enable indexing of verified public pages.
+
+## Phase 9: Vercel deployment
+
+The site is deployed at **https://rouchecafe.vercel.app/**, linked to GitHub `ayush-jha-NIT/rouchecafe` (`main`) through the Vercel project `rouchecafe`. Node.js 22 and Next.js are configured. `NEXT_PUBLIC_SITE_URL` is set to the verified production origin in Vercel production settings, not committed as a secret. Production access is public and preview deployments remain under Vercel Authentication. Website content remains demo-restricted until actual menu/prices, photos, operating hours and fulfilment rules are confirmed. See [Production deployment guide](docs/PHASE9_DEPLOYMENT.md).
