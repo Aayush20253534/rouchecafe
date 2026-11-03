@@ -17,6 +17,10 @@ import { SiteFooter } from "@/components/layout/SiteFooter";
 import { HomePage } from "@/components/pages/HomePage";
 import { AboutPage } from "@/components/pages/AboutPage";
 import { MenuPage } from "@/components/pages/MenuPage";
+import { CartPage } from "@/components/pages/CartPage";
+import { CheckoutPage } from "@/components/pages/CheckoutPage";
+import { parseStoredCart, updateCartQuantity } from "@/lib/cart-storage";
+import { cartItemCount } from "@/lib/menu-utils";
 import { Pill, SectionHeading, Photo, Hero, FeatureStrip, OpenWhatsApp, ButtonLink } from "@/components/ui/CafePrimitives";
 
 type Cart = Record<string, number>;
@@ -85,51 +89,66 @@ function Contact(){
     <section className="page-width gallery-cta contact-cta"><h2>Plan Your Visit</h2><p>Whether it&apos;s a casual coffee, a work meet-up, or a special celebration, we&apos;re here for you.</p><ButtonLink href="/reservation">BOOK A TABLE <ArrowRight size={17}/></ButtonLink></section>
   </>;
 }
-function CartPage({cart,change,clear,add}:{cart:Cart;change:(id:string,diff:number)=>void;clear:()=>void;add:(id:string)=>void}) {
-  const entries=menu.filter(x=>(cart[x.id]||0)>0); const subtotal=entries.reduce((s,x)=>s+x.price*(cart[x.id]||0),0);
-  return <>
-    <Hero eyebrow="Your Order" title="My Cart" description="Review your items, update quantities, and proceed to place your order." image={PHOTOS.coffee}/>
-    <section className="section page-width cart-layout"><div><div className="cart-heading"><h2><ShoppingCart/> Your Cart <small>({entries.reduce((s,x)=>s+(cart[x.id]||0),0)} items)</small></h2>{entries.length>0&&<button className="text-button" onClick={clear}><Trash2 size={16}/> Clear Cart</button>}</div>{entries.length===0?<div className="cart-empty"><ShoppingBag size={50}/><h3>Your cart is empty</h3><p>There&apos;s something delicious waiting on the menu.</p><ButtonLink href="/menu">EXPLORE MENU <ArrowRight size={16}/></ButtonLink></div>:<div className="cart-items">{entries.map(item=><div className="cart-row" key={item.id}><Photo src={item.image} alt={item.name}/><div><h3>{item.name}</h3><p>{item.description}</p><b>{money(item.price)}</b></div><div className="qty qty-large"><button onClick={()=>change(item.id,-1)} aria-label={"Decrease "+item.name}><Minus size={16}/></button>{cart[item.id]}<button onClick={()=>change(item.id,1)} aria-label={"Increase "+item.name}><Plus size={16}/></button></div><strong>{money(item.price*(cart[item.id]||0))}</strong><button className="remove-item" onClick={()=>change(item.id,-(cart[item.id]||0))} aria-label={"Remove "+item.name}><Trash2 size={18}/></button></div>)}</div>}<Link href="/menu" className="continue-shopping"><ArrowLeft size={17}/> Continue Shopping</Link></div>
-    <aside className="order-summary"><h2><ClipboardList/> Order Summary</h2><div><span>Subtotal</span><b>{money(subtotal)}</b></div><div><span>Delivery / Packing</span><span>Confirmed by café</span></div><div className="order-total"><strong>Estimated Total</strong><b>{money(subtotal)}</b></div><Link href={entries.length?"/checkout":"/menu"} className="btn btn-gold full">{entries.length?"PROCEED TO CHECKOUT":"EXPLORE MENU"} <ArrowRight size={17}/></Link><p><Info size={18}/> Delivery or packing charges, if any, will be confirmed by the café.</p></aside></section>
-    <section className="section page-width"><SectionHeading eyebrow="FRESH INSPIRATION" title="You May Also Like"/><div className="related-grid">{[menu[13],menu[8],menu[14],menu[2]].map(item=><ProductCard key={item.id} item={item} add={add} compact/>)}</div></section>
-    <FeatureStrip features={[{icon:<Truck/>,title:"QUICK ORDER ENQUIRY",desc:"Direct WhatsApp communication"},{icon:<PackageCheck/>,title:"FRESHLY PREPARED",desc:"Made with care"},{icon:<Leaf/>,title:"QUALITY INGREDIENTS",desc:"Always a priority"},{icon:<Coffee/>,title:"GREAT FOOD",desc:"And beverages"}]}/>
-  </>;
-}
-function Checkout({cart,clear}:{cart:Cart;clear:()=>void}) {
-  const entries=menu.filter(x=>(cart[x.id]||0)>0);const subtotal=entries.reduce((s,x)=>s+x.price*(cart[x.id]||0),0);
-  const [name,setName]=useState("");const [phone,setPhone]=useState("");const [email,setEmail]=useState("");const [type,setType]=useState<"Pickup"|"Delivery">("Pickup");const [address,setAddress]=useState("");const [date,setDate]=useState("");const [time,setTime]=useState("");const [notes,setNotes]=useState("");
-  function submit(e:FormEvent){e.preventDefault();if(CAFE.demoMenu)return;const lines=["Hello The Rouché Café, I would like to place an order.","","ORDER ITEMS",...entries.map(x=>"- "+x.name+" x "+cart[x.id]+" = "+money(x.price*cart[x.id])),"","Subtotal: "+money(subtotal),"Delivery or packing charges: To be confirmed","Order type: "+type,"Name: "+name,"Phone: "+phone,"Email: "+(email||"Not provided"),"Requested date: "+date,"Requested time: "+time,...(type==="Delivery"?["Delivery address: "+address]:[]),"Instructions: "+(notes||"None"),"Please confirm the total and availability."];openWa(lines.join("\n"));}
-  return <>
-    <Hero eyebrow="Checkout" title="Complete Your Order" description="Just a few more details and your café favourites will be ready for you." image={PHOTOS.coffee}/>
-    <div className="checkout-steps page-width"><span className="done"><CheckCircle2/> Cart</span><i/><span className="current"><MapPin/> Details</span><i/><span><ClipboardList/> Review</span><i/><span><MessageCircle/> Café Confirmation</span></div>
-    {CAFE.demoMenu&&<div className="page-width demo-banner"><Info size={20}/><div><strong>Checkout preview.</strong> The design-menu data is not verified, so live food orders are disabled. Replace the sample menu and set demoMenu to false after approval.</div></div>}
-    <form className="section page-width checkout-layout" onSubmit={submit}><div className="checkout-form"><section className="form-section"><h2><Users/> Customer Details</h2><div className="form-two"><label>Full Name *<input required value={name} onChange={e=>setName(e.target.value)} placeholder="Your name"/></label><label>Phone Number *<input required minLength={10} inputMode="tel" value={phone} onChange={e=>setPhone(e.target.value)} placeholder="+91 ..."/></label></div><label>Email Address (optional)<input type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com"/></label></section>
-      <section className="form-section"><h2><ShoppingBag/> Order Type</h2><div className="type-choice"><button type="button" className={type==="Pickup"?"selected":""} onClick={()=>setType("Pickup")}><ShoppingBag size={30}/><strong>Pickup (Takeaway)</strong><small>I&apos;ll collect my order from the café</small></button><button type="button" className={type==="Delivery"?"selected":""} onClick={()=>setType("Delivery")}><Truck size={31}/><strong>Home Delivery</strong><small>Subject to café service area confirmation</small></button></div>{type==="Delivery"&&<label>Delivery Address *<textarea required value={address} onChange={e=>setAddress(e.target.value)} placeholder="House, street, landmark, area and city" rows={3}/></label>}</section>
-      <section className="form-section"><h2><Clock3/> Preferred {type==="Pickup"?"Pickup":"Delivery"} Time</h2><div className="form-two"><label>Date *<input type="date" required min={new Date().toLocaleDateString("en-CA")} value={date} onChange={e=>setDate(e.target.value)}/></label><label>Time *<select required value={time} onChange={e=>setTime(e.target.value)}><option value="">Select time</option>{reservationTimes.map(x=><option key={x}>{x}</option>)}</select></label></div></section>
-      <section className="form-section"><h2><MessageCircle/> Special Instructions (optional)</h2><textarea rows={4} value={notes} onChange={e=>setNotes(e.target.value)} placeholder="No onion, extra cheese, dietary notes..."/></section></div>
-      <aside className="order-summary checkout-summary"><h2><ClipboardList/> Order Summary</h2>{entries.length===0?<p>Your cart is empty. <Link href="/menu">Explore the menu</Link></p>:entries.map(item=><div className="summary-item" key={item.id}><Photo src={item.image} alt={item.name}/><span><strong>{item.name}</strong><small>{money(item.price)} × {cart[item.id]}</small></span><b>{money(item.price*cart[item.id])}</b></div>)}<div><span>Subtotal</span><b>{money(subtotal)}</b></div><div><span>Delivery / Packing</span><span>To be confirmed</span></div><div className="order-total"><strong>Estimated Total</strong><b>{money(subtotal)}</b></div><button type="submit" className="btn btn-gold full" disabled={CAFE.demoMenu||entries.length===0}><MessageCircle size={18}/> {CAFE.demoMenu?"ORDERS AVAILABLE AFTER MENU APPROVAL":"PLACE ORDER ON WHATSAPP"} <ArrowRight size={17}/></button><p><Info size={18}/> The café confirms final charges and order acceptance on WhatsApp. No online payment is collected.</p></aside></form>
-    <FeatureStrip features={[{icon:<Truck/>,title:"CONVENIENT",desc:"Pickup and delivery enquiries"},{icon:<ShieldCheck/>,title:"NO ONLINE PAYMENT",desc:"Confirm directly with café"},{icon:<Leaf/>,title:"QUALITY INGREDIENTS",desc:"Prepared with care"},{icon:<Heart/>,title:"SERVED WITH LOVE",desc:"A welcoming café experience"}]}/>
-  </>;
-}
 function Blog(){
   return <><Hero eyebrow="From Our Café" title="Stories & Sips" description="A space for coffee stories, café updates, seasonal favourites and the moments that make The Rouché special." image={PHOTOS.cafe}/><section className="section page-width blog-content"><SectionHeading eyebrow="THE CAFÉ JOURNAL" title="Something Wonderful Is Brewing"/><div className="blog-intro"><Coffee size={44}/><h3>Our journal is coming soon</h3><p>We&apos;ll share real café stories, news, seasonal menus and celebrations here once the content is ready.</p><ButtonLink href="/gallery">EXPLORE GALLERY <ArrowRight size={16}/></ButtonLink></div></section></>;
 }
+const knownItemIds = new Set(menu.map((item) => item.id));
+
 export default function CafeSite() {
-  const pathname=usePathname();
-  const [cart,setCart]=useState<Cart>({});const [hydrated,setHydrated]=useState(false);const [toast,setToast]=useState("");
-  useEffect(()=>{try{const raw=localStorage.getItem("rouche-cart");if(raw){const parsed:unknown=JSON.parse(raw);if(parsed&&typeof parsed==="object"&&!Array.isArray(parsed)){const allowed=new Set(menu.map(x=>x.id));const safe:Cart={};for(const [k,v] of Object.entries(parsed as Record<string,unknown>)){if(allowed.has(k)&&typeof v==="number"&&Number.isInteger(v)&&v>0&&v<100)safe[k]=v;}setCart(safe);}}}catch{}setHydrated(true);},[]);
-  useEffect(()=>{if(hydrated)localStorage.setItem("rouche-cart",JSON.stringify(cart));},[cart,hydrated]);
-  useEffect(()=>{if(toast){const timer=setTimeout(()=>setToast(""),2200);return()=>clearTimeout(timer);}},[toast]);
-  const change=(id:string,diff:number)=>setCart(c=>{const n=Math.max(0,Math.min(99,(c[id]||0)+diff));const out={...c};if(n===0)delete out[id];else out[id]=n;return out;});
-  const add=(id:string,quantity=1)=>{change(id,quantity);const item=menu.find(x=>x.id===id);setToast(item?(quantity>1?quantity+" × ":"")+item.name+" added to cart":"Item added");};
-  const clear=()=>setCart({});
-  const count=useMemo(()=>Object.values(cart).reduce((s,x)=>s+x,0),[cart]);
-  const route=(pathname||"/").split("/").filter(Boolean)[0]||"home";
-  const current:Record<string,React.ReactNode>={
-    home:<HomePage/>,about:<AboutPage/>,menu:<MenuPage add={add} cart={cart} change={change}/>,
-    reservation:<Reservation/>,gallery:<Gallery/>,contact:<Contact/>,
-    cart:<CartPage cart={cart} change={change} clear={clear} add={add}/>,
-    checkout:<Checkout cart={cart} clear={clear}/>,blog:<Blog/>
+  const pathname = usePathname();
+  const [cart, setCart] = useState<Cart>({});
+  const [hydrated, setHydrated] = useState(false);
+  const [toast, setToast] = useState("");
+
+  useEffect(() => {
+    let raw: string | null = null;
+    try { raw = window.localStorage.getItem("rouche-cart"); } catch {}
+    setCart(parseStoredCart(raw, knownItemIds));
+    setHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (!hydrated) return;
+    try { window.localStorage.setItem("rouche-cart", JSON.stringify(cart)); } catch {}
+  }, [cart, hydrated]);
+
+  useEffect(() => {
+    if (!toast) return;
+    const timer = window.setTimeout(() => setToast(""), 2200);
+    return () => window.clearTimeout(timer);
+  }, [toast]);
+
+  const change = (id: string, delta: number) => {
+    setCart((current) => updateCartQuantity(current, id, delta, knownItemIds));
   };
-  return <><SiteHeader cartCount={count}/><main id="main">{current[route]||<section className="section page-width not-found"><h1>Page not found</h1><ButtonLink href="/">RETURN HOME</ButtonLink></section>}</main><SiteFooter/>{toast&&<div className="cart-toast" role="status"><CheckCircle2 size={18}/>{toast}<Link href="/cart">View cart</Link></div>}</>;
+  const add = (id: string, quantity = 1) => {
+    if (!knownItemIds.has(id) || !Number.isInteger(quantity) || quantity < 1) return;
+    change(id, quantity);
+    const item = menu.find((product) => product.id === id);
+    setToast(item ? (quantity > 1 ? quantity + " × " : "") + item.name + " added to cart" : "");
+  };
+  const clear = () => setCart({});
+  const count = useMemo(() => cartItemCount(cart), [cart]);
+  const route = (pathname || "/").split("/").filter(Boolean)[0] || "home";
+
+  const current: Record<string, React.ReactNode> = {
+    home: <HomePage />,
+    about: <AboutPage />,
+    menu: <MenuPage add={add} cart={cart} change={change} />,
+    reservation: <Reservation />,
+    gallery: <Gallery />,
+    contact: <Contact />,
+    cart: <CartPage cart={cart} change={change} clear={clear} add={add} />,
+    checkout: <CheckoutPage cart={cart} />,
+    blog: <Blog />,
+  };
+
+  return (
+    <>
+      <SiteHeader cartCount={count} />
+      <main id="main">{current[route] || <section className="section page-width not-found"><h1>Page not found</h1><ButtonLink href="/">RETURN HOME</ButtonLink></section>}</main>
+      <SiteFooter />
+      {toast && <div className="cart-toast" role="status"><CheckCircle2 size={18} />{toast}<Link href="/cart">View cart</Link></div>}
+    </>
+  );
 }

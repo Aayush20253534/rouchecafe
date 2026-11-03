@@ -61,3 +61,8 @@ Import this repository into Vercel as a Next.js project. No database or server s
 ## Menu system
 
 Phase 4 introduces `src/data/menu.ts`, `src/lib/menu-utils.ts`, `src/components/pages/MenuPage.tsx`, reusable menu cards, responsive cart previews and filter tests. See [Menu system details](docs/MENU_SYSTEM.md). The current menu remains illustrative until replaced with verified client data.
+
+
+## Phase 5: Order flow
+
+The cart, checkout and WhatsApp handoff are implemented; see [Ordering system](docs/ORDERING_SYSTEM.md). Orders use a Details → Review → WhatsApp request process. All food ordering remains in demo mode until menu, prices and fulfilment charges are verified. A request is not an accepted order, and the website never collects online payments.

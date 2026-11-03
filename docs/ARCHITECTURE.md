@@ -56,3 +56,8 @@ The Home and About pages now live in \`src/components/pages/HomePage.tsx\` and \
 The menu page now lives in \`src/components/pages/MenuPage.tsx\`; product cards and the desktop cart preview are in \`src/components/menu/\`. Data has been moved to \`src/data/menu.ts\` and photos to \`src/lib/photos.ts\`; imports from \`src/lib/site.ts\` continue to work through re-exports. Filtering and subtotals are pure functions in \`src/lib/menu-utils.ts\`, covered by \`tests/menu-utils.test.ts\`.
 
 The cart's existing localStorage workflow remains unchanged and is shared with Cart and Checkout. The new menu supports a responsive phone cart dock, selected product quantities, a client-only favourite list, filter resets, category states, and empty search results. See \`docs/MENU_SYSTEM.md\`.
+
+
+## Phase 5: Cart / Checkout
+
+The Cart and Checkout pages are implemented in \`src/components/pages/CartPage.tsx\` and \`CheckoutPage.tsx\`. They use \`src/components/order/OrderSummary.tsx\` and scoped styling in \`src/app/ordering.css\`. \`src/lib/order.ts\` provides the pure format/validation functions; \`src/lib/cart-storage.ts\` handles defensive cart persistence. See \`docs/ORDERING_SYSTEM.md\` for user flow and release safeguards.

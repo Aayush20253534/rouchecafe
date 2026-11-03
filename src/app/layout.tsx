@@ -4,6 +4,7 @@ import "./tokens.css";
 import "./globals.css";
 import "./home-about.css";
 import "./menu.css";
+import "./ordering.css";
 
 export const metadata: Metadata = {
   title: {

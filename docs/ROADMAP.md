@@ -4,7 +4,7 @@
 2. **Design system and shared UI (implemented)** — colors, typography, reusable visual components, mobile navigation, header and footer refinement.
 3. **Home and About (implemented)** — reproduce the supplied mockups using confirmed branding and visuals.
 4. **Menu and product system (implemented with demo data)** — responsive menu, categories, search, dietary/bestseller filters, product quantity controls, favourites, and live cart preview. Replace illustrative food/menu data when received.
-5. **Cart, checkout and WhatsApp orders** — finalize approved payment and fulfilment rules and order handoff.
+5. **Cart, checkout and WhatsApp orders (implemented with demo safeguard)** — editable cart, reviewable pickup/delivery request, validation and WhatsApp handoff. The client's final fulfilment and payment rules remain unconfirmed.
 6. **Reservations** — date/time/party-size form and WhatsApp confirmation request.
 7. **Gallery, blog and contact** — client-provided images, blog content, map and enquiries.
 8. **Responsiveness, SEO and testing** — performance, accessibility, structured data and all core user journeys.
