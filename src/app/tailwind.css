@@ -1,0 +1,9 @@
+/*
+ * Tailwind v4 utilities without Preflight.
+ * The existing reference-layout styles are handcrafted in globals.css.
+ * Omitting Tailwind's reset preserves that design while future phases
+ * gain access to Tailwind's utility classes.
+ */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);

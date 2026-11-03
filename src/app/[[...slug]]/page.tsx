@@ -1,22 +1,30 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import CafeSite from "@/components/CafeSite";
+import { isPageKey, PAGE_TITLES } from "@/lib/routes";
 
-const titles: Record<string,string> = {
-  about: "About Us", menu: "Explore Our Menu", reservation: "Reserve a Table",
-  gallery: "Gallery", blog: "Journal", contact: "Contact Us",
-  cart: "Your Cart", checkout: "Checkout"
+type PageProps = {
+  params: Promise<{ slug?: string[] }>;
 };
 
-export async function generateMetadata({
-  params
-}: {
-  params: Promise<{ slug?: string[] }>
-}): Promise<Metadata> {
-  const { slug = [] } = await params;
-  const key = slug[0] || "home";
-  return { title: titles[key] || "Good Coffee, Brighter Days" };
+function resolveRoute(slug: string[]): keyof typeof PAGE_TITLES {
+  const key = slug[0] ?? "home";
+  if (slug.length > 1 || !isPageKey(key)) {
+    notFound();
+  }
+  return key;
 }
 
-export default function SitePage() {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { slug = [] } = await params;
+  const route = resolveRoute(slug);
+  return { title: PAGE_TITLES[route] };
+}
+
+export default async function SitePage({ params }: PageProps) {
+  const { slug = [] } = await params;
+  resolveRoute(slug);
   return <CafeSite />;
 }
