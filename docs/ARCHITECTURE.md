@@ -61,3 +61,8 @@ The cart's existing localStorage workflow remains unchanged and is shared with C
 ## Phase 5: Cart / Checkout
 
 The Cart and Checkout pages are implemented in \`src/components/pages/CartPage.tsx\` and \`CheckoutPage.tsx\`. They use \`src/components/order/OrderSummary.tsx\` and scoped styling in \`src/app/ordering.css\`. \`src/lib/order.ts\` provides the pure format/validation functions; \`src/lib/cart-storage.ts\` handles defensive cart persistence. See \`docs/ORDERING_SYSTEM.md\` for user flow and release safeguards.
+
+
+## Phase 6: Reservation requests
+
+The dedicated \`ReservationPage.tsx\` and homepage \`QuickTableRequest.tsx\` share \`src/lib/reservations.ts\` for validation, IST preferred time handling and formatted WhatsApp requests. \`src/app/reservation.css\` provides responsive styles. Requests are never auto-confirmed. See \`docs/RESERVATIONS.md\`.

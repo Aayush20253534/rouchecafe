@@ -66,3 +66,8 @@ Phase 4 introduces `src/data/menu.ts`, `src/lib/menu-utils.ts`, `src/components/
 ## Phase 5: Order flow
 
 The cart, checkout and WhatsApp handoff are implemented; see [Ordering system](docs/ORDERING_SYSTEM.md). Orders use a Details → Review → WhatsApp request process. All food ordering remains in demo mode until menu, prices and fulfilment charges are verified. A request is not an accepted order, and the website never collects online payments.
+
+
+## Phase 6: Reservations
+
+Both the full reservation page and the homepage booking form now prepare validated WhatsApp requests, with preferred times interpreted in Prayagraj's Asia/Kolkata timezone. No live availability or automatic confirmation is provided. See [Reservation guide](docs/RESERVATIONS.md).
