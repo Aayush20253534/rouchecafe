@@ -1,8 +1,8 @@
-// Temporary stock photography used for layout previews only.
-// Replace these with photos licensed or supplied by the café in /public/images.
+// Homepage hero: supplied artwork stored locally under /public/images.
+// Other entries are temporary stock photography to replace with café-approved photos.
 const p = (id: string, w=1200) => "https://images.unsplash.com/" + id + "?auto=format&fit=crop&w=" + w + "&q=82";
 export const PHOTOS = {
-  hero: p("photo-1495474472287-4d71bcdd2085",1600),
+  hero: "/images/rouche-cafe-hero.png",
   interior: p("photo-1517248135467-4c7edcad34c4",1400),
   interior2: p("photo-1554118811-1e0d58224f24",1200),
   cafe: p("photo-1442512595331-e89e73853f31",1400),

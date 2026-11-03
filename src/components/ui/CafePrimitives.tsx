@@ -67,7 +67,7 @@ export function Hero({
           src={image}
           alt="Illustrative café atmosphere"
           loading="eager"
-          sizes="(max-width: 680px) 100vw, (max-width: 1100px) 70vw, 65vw"
+          sizes="100vw"
         />
       </div>
     </section>
