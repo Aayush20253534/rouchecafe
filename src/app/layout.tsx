@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./tailwind.css";
 import "./tokens.css";
 import "./globals.css";
+import "./home-about.css";
 
 export const metadata: Metadata = {
   title: {

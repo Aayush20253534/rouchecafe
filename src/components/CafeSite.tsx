@@ -14,6 +14,8 @@ import {
 import { CAFE, PHOTOS, categories, menu, money, waLink, type MenuItem } from "@/lib/site";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
+import { HomePage } from "@/components/pages/HomePage";
+import { AboutPage } from "@/components/pages/AboutPage";
 import { Pill, SectionHeading, Photo, Hero, FeatureStrip, OpenWhatsApp, ButtonLink } from "@/components/ui/CafePrimitives";
 
 type Cart = Record<string, number>;
@@ -27,48 +29,6 @@ function ProductCard({item,add,compact=false}:{item:MenuItem;add:(id:string)=>vo
 }
 const openWa=(message:string)=>window.open(waLink(message),"_blank","noopener,noreferrer");
 
-function Home({add}:{add:(id:string)=>void}) {
-  const featured = [menu[4],menu[14],menu[1],menu[9],menu[15]];
-  return <>
-    <Hero eyebrow="Good Coffee, Brighter Days" title="THE ROUCHÉ CAFÉ" description="A cozy cafe and restaurant where great food, artisan coffee, and warm ambience come together for perfect moments." image={PHOTOS.hero} center>
-      <ButtonLink href="/menu">EXPLORE MENU <ArrowRight size={18}/></ButtonLink><ButtonLink href="/about" light>OUR STORY</ButtonLink>
-    </Hero>
-    <FeatureStrip features={[
-      {icon:<Coffee/>,title:"ARTISAN COFFEE",desc:"Freshly brewed, rich in flavour"},
-      {icon:<UtensilsCrossed/>,title:"DELICIOUS FOOD",desc:"Curated bites for every craving"},
-      {icon:<Armchair/>,title:"COZY AMBIENCE",desc:"A perfect space to relax, work or meet"},
-      {icon:<Heart/>,title:"MADE WITH LOVE",desc:"Quality ingredients and heartfelt service"}]}/>
-    <section className="section page-width"><SectionHeading eyebrow="OUR SIGNATURE MENU" title="Crafted to Perfection"/>
-      <div className="heading-end"><Link href="/menu">VIEW FULL MENU <ArrowRight size={17}/></Link></div>
-      <div className="signature-grid">{featured.map(item=><ProductCard key={item.id} item={item} add={add} compact/>)}</div>
-      {CAFE.demoMenu && <p className="demo-note"><Info size={15}/> Menu photos, dishes and prices are illustrative placeholders pending the café's confirmed menu.</p>}
-      <div className="promo-grid"><div className="chef-promo" style={{backgroundImage:"linear-gradient(90deg,rgba(0,48,29,.96),rgba(0,48,29,.7),transparent),url("+PHOTOS.salad+")"}}>
-        <span className="script">Chef&apos;s Special</span><h3>FRESHLY CRAFTED FAVOURITES</h3><p>Discover delicious dishes prepared with care, every day.</p><ButtonLink href="/menu" light>DISCOVER MORE <ArrowRight size={16}/></ButtonLink>
-      </div><div className="quote-card"><span className="quote-mark">“</span><p>A welcoming place for good coffee, delicious food and moments worth slowing down for.</p><small>THE ROUCHÉ CAFÉ</small></div></div>
-    </section>
-    <section className="section page-width gallery-preview"><SectionHeading eyebrow="A FEAST FOR THE SENSES" title="A Glimpse of The Rouché"/>
-      <div className="gallery-row">{[PHOTOS.interior,PHOTOS.coffee,PHOTOS.brownie,PHOTOS.cafe,PHOTOS.interior2,PHOTOS.icedCoffee].map((src,i)=><Photo src={src} alt={"Café gallery preview "+(i+1)} key={i}/>)}</div>
-      <div className="centered"><ButtonLink href="/gallery" light>VIEW GALLERY <ArrowRight size={16}/></ButtonLink></div>
-    </section>
-    <section className="reserve-preview"><div className="page-width reserve-grid"><div><Pill>RESERVE YOUR TABLE</Pill><h2>Book a Seat for You</h2><p>Whether it&apos;s a coffee date, a casual meet-up, or a special celebration, we&apos;d love to host you.</p></div><QuickReservation/></div></section>
-  </>;
-}
-function QuickReservation() {
-  const [name,setName]=useState(""); const [date,setDate]=useState(""); const [time,setTime]=useState(""); const [guests,setGuests]=useState("2");
-  function submit(e:FormEvent) {e.preventDefault();openWa("Hello The Rouché Café, I would like to request a table reservation.\nName: "+name+"\nDate: "+date+"\nTime: "+time+"\nGuests: "+guests+"\nPlease confirm availability.");}
-  return <form onSubmit={submit} className="quick-reservation"><input required aria-label="Your name" placeholder="Full Name" value={name} onChange={e=>setName(e.target.value)}/><input required aria-label="Date" type="date" min={new Date().toLocaleDateString("en-CA")} value={date} onChange={e=>setDate(e.target.value)}/><select required aria-label="Reservation time" value={time} onChange={e=>setTime(e.target.value)}><option value="">Time</option>{reservationTimes.map(t=><option key={t}>{t}</option>)}</select><select aria-label="Guests" value={guests} onChange={e=>setGuests(e.target.value)}>{Array.from({length:15},(_,i)=><option key={i} value={String(i+1)}>{i+1} {i===0?"Guest":"Guests"}</option>)}</select><button className="btn btn-green" type="submit">REQUEST A TABLE <ArrowRight size={16}/></button><small>Request sent via WhatsApp. Booking is confirmed by the café.</small></form>;
-}
-function About() {
-  return <>
-    <Hero eyebrow="A Little About Us" title="MORE THAN JUST A CAFE" description="At The Rouché Café, we believe in warm hospitality, artisan coffee and thoughtfully prepared food. A place where good people, great conversations and delicious flavours come together." image={PHOTOS.interior}/>
-    <section className="section page-width about-story"><div className="story-images"><Photo src={PHOTOS.coffee} alt="Barista preparing coffee"/><Photo src={PHOTOS.group} alt="Friends meeting at café"/></div><div className="story-text"><Pill>OUR STORY</Pill><h2>THE STORY BEHIND THE ROUCHÉ</h2><p>The Rouché Café was born from a simple idea: to create a welcoming neighbourhood café where good coffee, honest food and meaningful moments come together. It&apos;s a space designed for everyone, from early risers and busy professionals to friends, families and dreamers.</p><span className="script">Good Food • Good People • Better Days</span></div></section>
-    <section className="about-values"><div className="page-width"><SectionHeading eyebrow="OUR PHILOSOPHY" title="GOOD COFFEE. BRIGHTER DAYS."/><div className="values-grid">{[{icon:<Leaf/>,title:"Thoughtful Ingredients",text:"Fresh ingredients and careful choices in everything we serve."},{icon:<Coffee/>,title:"Crafted with Care",text:"Every cup and dish is made with passion, not just process."},{icon:<Users/>,title:"A Place to Belong",text:"More than a café. A space where you feel at home."}].map(v=><div key={v.title}><span className="circle-icon">{v.icon}</span><h3>{v.title}</h3><p>{v.text}</p></div>)}</div></div></section>
-    <section className="section page-width"><SectionHeading eyebrow="THE ROUCHÉ EXPERIENCE" title="A Place for Every Moment"/><div className="three-grid moments-grid">{[{image:PHOTOS.interior2,title:"Your Coffee Corner",text:"Find your perfect spot, whether it's a quiet moment alone or a productive work session."},{image:PHOTOS.group,title:"Good Food, Great Company",text:"Share delicious meals and unforgettable moments with friends and family."},{image:PHOTOS.cake,title:"Sweet Endings",text:"From classic desserts to signature creations, every bite is a celebration."}].map(x=><article key={x.title}><Photo src={x.image} alt={x.title}/><h3>{x.title}</h3><p>{x.text}</p></article>)}</div></section>
-    <section className="promise-grid"><Photo src={PHOTOS.cafe} alt="Warm café hospitality"/><div><Pill>OUR PROMISE</Pill><h2>Quality in Every Detail</h2><div className="promise-items">{[{icon:<Leaf/>,title:"Quality Ingredients",desc:"Fresh, seasonal and carefully sourced."},{icon:<ChefHat/>,title:"Freshly Prepared",desc:"From our kitchen to your table, with love."},{icon:<Heart/>,title:"Warm Hospitality",desc:"Friendly faces and genuine care."},{icon:<Coffee/>,title:"Relaxed Ambience",desc:"A calm space to unwind and connect."}].map(x=><div key={x.title}><span className="circle-icon">{x.icon}</span><div><h3>{x.title}</h3><p>{x.desc}</p></div></div>)}</div></div></section>
-    <section className="quote-wide"><span>“</span><p>A welcoming place for good coffee, delicious food and moments worth slowing down for.</p></section>
-    <section className="bottom-cta page-width"><Photo src={PHOTOS.interior} alt="Café tables"/><div><h2>Your Table Is Waiting</h2><p>Celebrate, catch up, or simply take a break. Book your table and let us take care of the rest.</p><ButtonLink href="/reservation">BOOK A TABLE <ArrowRight size={17}/></ButtonLink></div></section>
-  </>;
-}
 function MenuPage({add,cart,change}:{add:(id:string)=>void;cart:Cart;change:(id:string,diff:number)=>void}) {
   const [category,setCategory]=useState("All"); const [filter,setFilter]=useState("All"); const [query,setQuery]=useState("");
   const matches=menu.filter(item=>(category==="All"||item.category===category)&&(filter==="All"||(filter==="Bestseller"&&item.bestseller)||(filter==="Veg"&&item.veg)||(filter==="Non-Veg"&&!item.veg))&&(item.name+" "+item.description).toLowerCase().includes(query.toLowerCase()));
@@ -187,7 +147,7 @@ export default function CafeSite() {
   const count=useMemo(()=>Object.values(cart).reduce((s,x)=>s+x,0),[cart]);
   const route=(pathname||"/").split("/").filter(Boolean)[0]||"home";
   const current:Record<string,React.ReactNode>={
-    home:<Home add={add}/>,about:<About/>,menu:<MenuPage add={add} cart={cart} change={change}/>,
+    home:<HomePage/>,about:<AboutPage/>,menu:<MenuPage add={add} cart={cart} change={change}/>,
     reservation:<Reservation/>,gallery:<Gallery/>,contact:<Contact/>,
     cart:<CartPage cart={cart} change={change} clear={clear} add={add}/>,
     checkout:<Checkout cart={cart} clear={clear}/>,blog:<Blog/>

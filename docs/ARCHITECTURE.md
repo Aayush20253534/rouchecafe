@@ -40,3 +40,12 @@ Custom CSS remains the primary style layer until the design-system phase. Tailwi
 ## Phase 2 layout and theme
 
 Shared branding and navigation components are now under `src/components/layout` and `src/components/ui`; see `docs/DESIGN_SYSTEM.md`. The visual tokens are centralized in `src/app/tokens.css`. The existing feature implementations in `CafeSite.tsx` remain intact.
+
+
+## Phase 3: Home and About views
+
+The Home and About pages now live in \`src/components/pages/HomePage.tsx\` and \`src/components/pages/AboutPage.tsx\`. The shared entrypoint \`CafeSite.tsx\` routes to them without changing the menu/cart/checkout features.
+
+\`src/components/pages/QuickTableRequest.tsx\` owns the homepage WhatsApp booking form. It includes basic required fields and local-date validation; café staff must confirm availability manually. The full reservation route remains unchanged.
+
+\`src/components/ui/CafeDecorations.tsx\` supplies self-contained botanical and coffee-bean SVG decorations. Scoped styles in \`src/app/home-about.css\` reproduce the user-provided Home and About reference layouts and adapt them to tablet/mobile. Supplied photography has **not** yet been provided: stock previews still come from the centrally configured \`PHOTOS\` entries in \`src/lib/site.ts\`. Sample menu prices are not authentic; the homepage explicitly labels them illustrative.
