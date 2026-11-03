@@ -1,9 +1,11 @@
 import type { MetadataRoute } from "next";
+import { productionBaseUrl } from "@/lib/seo";
 
 export default function robots(): MetadataRoute.Robots {
-  const base = process.env.NEXT_PUBLIC_SITE_URL;
+  const base = productionBaseUrl();
+  if (!base) return { rules: [{ userAgent: "*", disallow: "/" }] };
   return {
-    rules: [{ userAgent: "*", allow: "/", disallow: ["/checkout", "/cart"] }],
-    ...(base ? { sitemap: base.replace(/\/$/, "") + "/sitemap.xml" } : {})
+    rules: [{ userAgent: "*", allow: "/", disallow: ["/cart", "/checkout"] }],
+    sitemap: new URL("/sitemap.xml", base).toString(),
   };
 }
