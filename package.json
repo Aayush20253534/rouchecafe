@@ -2,12 +2,15 @@
   "name": "the-rouche-cafe",
   "version": "1.0.0",
   "private": true,
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test tests/*.test.ts"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",
@@ -22,6 +25,7 @@
     "@types/react-dom": "^19.0.0",
     "postcss": "^8.5.0",
     "tailwindcss": "^4.3.0",
-    "typescript": "^5.8.0"
+    "typescript": "^5.8.0",
+    "tsx": "^4.20.0"
   }
 }
