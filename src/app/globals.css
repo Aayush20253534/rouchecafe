@@ -508,3 +508,8 @@ p{line-height:1.6}
  .product-body>p{font-size:10px}
  .footer-main{gap:17px}
 }
+
+/* Actual supplied café logo, extracted for header/footer use. */
+.logo-asset{width:72px;height:72px;object-fit:contain;border-radius:50%;display:block;flex-shrink:0}
+.logo-light .logo-asset{width:100px;height:100px}
+@media(max-width:680px){.logo-asset{width:59px;height:59px}.logo-light .logo-asset{width:86px;height:86px}}
