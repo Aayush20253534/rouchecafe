@@ -66,3 +66,8 @@ The Cart and Checkout pages are implemented in \`src/components/pages/CartPage.t
 ## Phase 6: Reservation requests
 
 The dedicated \`ReservationPage.tsx\` and homepage \`QuickTableRequest.tsx\` share \`src/lib/reservations.ts\` for validation, IST preferred time handling and formatted WhatsApp requests. \`src/app/reservation.css\` provides responsive styles. Requests are never auto-confirmed. See \`docs/RESERVATIONS.md\`.
+
+
+## Phase 7: Gallery, Blog and Contact
+
+Dedicated page components for Gallery, Blog and Contact now live in \`src/components/pages/\`. Typed content is separated into \`src/data/gallery.ts\` and \`src/data/blog.ts\`. WhatsApp contact validation and safe optional Google Maps embedding are in \`src/lib/contact.ts\`, while verified social profile links belong to \`src/lib/social.ts\`. Scoped styling is in \`src/app/showcase.css\`. See \`docs/PHASE7_CONTENT.md\` for content replacement and launch limitations.

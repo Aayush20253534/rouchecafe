@@ -6,6 +6,7 @@ import "./home-about.css";
 import "./menu.css";
 import "./ordering.css";
 import "./reservation.css";
+import "./showcase.css";
 
 export const metadata: Metadata = {
   title: {

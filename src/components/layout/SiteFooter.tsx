@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Coffee, MapPin, MessageCircle, Phone } from "lucide-react";
+import { Coffee, MapPin, MessageCircle, Phone, Instagram, Facebook, Youtube, Linkedin } from "lucide-react";
+import { VERIFIED_SOCIAL_PROFILES } from "@/lib/social";
 import { CAFE, waLink } from "@/lib/site";
 import { MAIN_NAVIGATION } from "@/lib/navigation";
 import { BrandLogo } from "@/components/ui/BrandLogo";
@@ -29,6 +30,17 @@ export function SiteFooter() {
             >
               <MapPin size={17} aria-hidden="true" />
             </a>
+            {VERIFIED_SOCIAL_PROFILES.map(({ network, url }) => {
+              const Icon = {
+                instagram: Instagram, facebook: Facebook, youtube: Youtube, linkedin: Linkedin,
+              }[network];
+              return (
+                <a href={url} key={network} aria-label={"Official café " + network}
+                  target="_blank" rel="noopener noreferrer">
+                  <Icon size={17} aria-hidden="true"/>
+                </a>
+              );
+            })}
           </div>
         </div>
         <div>

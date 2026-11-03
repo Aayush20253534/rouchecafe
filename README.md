@@ -71,3 +71,8 @@ The cart, checkout and WhatsApp handoff are implemented; see [Ordering system](d
 ## Phase 6: Reservations
 
 Both the full reservation page and the homepage booking form now prepare validated WhatsApp requests, with preferred times interpreted in Prayagraj's Asia/Kolkata timezone. No live availability or automatic confirmation is provided. See [Reservation guide](docs/RESERVATIONS.md).
+
+
+## Phase 7: Gallery, Blog and Contact
+
+The branded gallery has filters and keyboard-accessible photo previews. The Blog is ready for approved real content, but intentionally publishes no placeholder articles. Contact enquiries open a prefilled WhatsApp message after review, and the supplied exact Google Maps location is linked. An iframe requires an optional verified embed URL; see [Phase 7 content guide](docs/PHASE7_CONTENT.md).
