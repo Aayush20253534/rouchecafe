@@ -1,17 +1,12 @@
 "use client";
 
-import React, { FormEvent, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  ArrowRight, ArrowLeft, CalendarDays, CheckCircle2, ChevronDown, Clock3,
-  Coffee, Heart, Leaf, Mail, MapPin, Menu as MenuIcon, Minus, Plus, Phone,
-  Search, ShoppingBag, ShoppingCart, Star, Trash2, Users, UtensilsCrossed,
-  X, MessageCircle, Instagram, Facebook, Youtube, Linkedin, Send, Sparkles,
-  Truck, PackageCheck, ShieldCheck, ChefHat, Armchair, CakeSlice, Gift,
-  Info, ClipboardList, Flame, Sandwich, BookOpen
-} from "lucide-react";
-import { CAFE, PHOTOS, categories, menu, money, waLink, type MenuItem } from "@/lib/site";
+import { CheckCircle2 } from "lucide-react";
+import { menu } from "@/lib/site";
+import type { Cart } from "@/types/cart";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { HomePage } from "@/components/pages/HomePage";
@@ -25,18 +20,7 @@ import { ContactPage } from "@/components/pages/ContactPage";
 import { BlogPage } from "@/components/pages/BlogPage";
 import { parseStoredCart, updateCartQuantity } from "@/lib/cart-storage";
 import { cartItemCount } from "@/lib/menu-utils";
-import { Pill, SectionHeading, Photo, Hero, FeatureStrip, OpenWhatsApp, ButtonLink } from "@/components/ui/CafePrimitives";
-
-type Cart = Record<string, number>;
-
-function ProductCard({item,add,compact=false}:{item:MenuItem;add:(id:string)=>void;compact?:boolean}) {
-  const [liked,setLiked]=useState(false);
-  return <article className={"product-card "+(compact?"compact":"")}>
-    <div className="product-img-wrap"><Photo src={item.image} alt={item.name} className="product-photo"/><button className={"heart "+(liked?"active":"")} onClick={()=>setLiked(v=>!v)} aria-label={liked?"Remove from favourites":"Add to favourites"}><Heart size={19} fill={liked?"currentColor":"none"}/></button></div>
-    <div className="product-body"><strong>{item.name}</strong>{!compact&&<p>{item.description}</p>}<div className="product-bottom"><b>{money(item.price)}</b><button onClick={()=>add(item.id)} className="add-btn"><ShoppingBag size={14}/> Add to Cart</button></div></div>
-  </article>;
-}
-const openWa=(message:string)=>window.open(waLink(message),"_blank","noopener,noreferrer");
+import { ButtonLink } from "@/components/ui/CafePrimitives";
 
 const knownItemIds = new Set(menu.map((item) => item.id));
 
@@ -77,7 +61,7 @@ export default function CafeSite() {
   const count = useMemo(() => cartItemCount(cart), [cart]);
   const route = (pathname || "/").split("/").filter(Boolean)[0] || "home";
 
-  const current: Record<string, React.ReactNode> = {
+  const current: Record<string, ReactNode> = {
     home: <HomePage />,
     about: <AboutPage />,
     menu: <MenuPage add={add} cart={cart} change={change} />,
@@ -91,10 +75,22 @@ export default function CafeSite() {
 
   return (
     <>
-      <SiteHeader cartCount={count} />
-      <main id="main">{current[route] || <section className="section page-width not-found"><h1>Page not found</h1><ButtonLink href="/">RETURN HOME</ButtonLink></section>}</main>
-      <SiteFooter />
-      {toast && <div className="cart-toast" role="status"><CheckCircle2 size={18} />{toast}<Link href="/cart">View cart</Link></div>}
+      <SiteHeader cartCount={count}/>
+      <main id="main" tabIndex={-1}>
+        {current[route] || (
+          <section className="section page-width not-found">
+            <h1>Page not found</h1>
+            <ButtonLink href="/">RETURN HOME</ButtonLink>
+          </section>
+        )}
+      </main>
+      <SiteFooter/>
+      {toast && (
+        <div className="cart-toast" role="status" aria-live="polite" aria-atomic="true">
+          <CheckCircle2 size={18} aria-hidden="true"/>{toast}
+          <Link href="/cart">View cart</Link>
+        </div>
+      )}
     </>
   );
 }

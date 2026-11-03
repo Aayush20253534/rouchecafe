@@ -1,0 +1,82 @@
+/*
+ * Phase 8: global accessibility and small-screen polish.
+ * Applied after page styles, without changing the established visual palette.
+ */
+html { scroll-padding-top: calc(var(--header-height) + 12px); }
+body { min-width: 280px; }
+#main { min-width: 0; }
+#main:focus { outline: none; }
+a, button, input, select, textarea, summary { -webkit-tap-highlight-color: rgba(200,137,36,.18); }
+:where(a,button,input,select,textarea,summary):focus-visible {
+  outline: 3px solid #a96b19;
+  outline-offset: 3px;
+}
+:where(input,select,textarea):focus-visible { box-shadow: 0 0 0 2px #fff8ef; }
+:where(button,[role="button"]):disabled { cursor: not-allowed; }
+:where(input,textarea,select) { max-width: 100%; }
+:where(p,li,dd,td,span) { overflow-wrap: break-word; }
+:where(img) { font-style: italic; }
+:where(section) { scroll-margin-top: calc(var(--header-height) + 15px); }
+:where(.trc-contact-map iframe) { display:block; }
+:where(.trc-gallery-lightbox button):focus-visible { outline-color: #f8d184; }
+/* Do not let sticky headers or floating controls obscure keyboard navigation. */
+.nav-links a:focus-visible, .book-button:focus-visible, .cart-icon:focus-visible,
+.mobile-toggle:focus-visible { position: relative; z-index: 5; }
+.trc-menu-mobile-cart { max-width: calc(100vw - 20px); }
+/* Accessible minimum touch areas without overriding designer visual buttons. */
+@media (pointer: coarse) {
+  .cart-icon, .mobile-toggle, .trc-search-clear,
+  .trc-product-quantity button, .trc-mini-cart-controls button,
+  .trc-gallery-lightbox button, .trc-cart-item-controls button {
+    min-width: 40px;
+    min-height: 40px;
+  }
+  .trc-menu-filters button, .trc-gallery-filters button,
+  .trc-blog-filter button { min-height: 42px; }
+}
+@media (max-width: 950px) {
+  .site-header { z-index: 100; }
+  .nav-links.open { overscroll-behavior: contain; }
+  .mobile-toggle { position:relative; z-index:6; }
+  .header-actions { z-index:5; }
+  .nav-backdrop { z-index:2; }
+}
+@media (max-width: 680px) {
+  .page-width { max-width: calc(100% - 30px); }
+  .trc-home,.trc-about,.trc-menu-page,.trc-cart-page,
+  .trc-checkout-page,.trc-reservation-page,.trc-gallery-page,
+  .trc-blog-page,.trc-contact-page { max-width: 100%; }
+  .trc-home-quote,.trc-chef-card,.trc-gallery-visit,.trc-contact-form-card,
+  .trc-order-form-section,.trc-reservation-card { max-width:100%; min-width:0; }
+  .trc-gallery-lightbox figure { min-width:0; }
+  .trc-gallery-mosaic { min-width:0; }
+  .trc-home-booking .trc-quick-booking-form { min-width:0; }
+  .trc-contact-map-overlay { bottom:10px;right:10px;max-width:calc(100% - 20px); }
+  .trc-contact-visit-banner .script { line-height:1.2; }
+}
+@media (max-width: 380px) {
+  .page-width { width: calc(100% - 24px); max-width:calc(100% - 24px); }
+  .header-inner { gap:5px; }
+  .header-actions { gap:6px; }
+  .logo { width:75px; }
+  .logo-asset { width:51px; height:51px; }
+  .trc-gallery-visit h2 { font-size:clamp(28px,8vw,35px); }
+  .trc-contact-info { grid-template-columns:1fr 1fr; }
+  .trc-contact-info>div { gap:4px; }
+  .trc-contact-info strong { font-size:11px; }
+  .trc-contact-info small,.trc-contact-info a { font-size:10px; }
+  .trc-reservation-cta,.trc-contact-submit,.trc-checkout-send { font-size:11px; }
+  .trc-product-add { font-size:10px; }
+}
+/* Form input font-size prevents mobile Safari auto-zoom. */
+@media (max-width: 680px) and (pointer: coarse) {
+  .trc-contact-form input,.trc-contact-form textarea,.trc-contact-form select,
+  .trc-reservation-form input,.trc-reservation-form textarea,.trc-reservation-form select,
+  .trc-order-form input,.trc-order-form textarea,.trc-order-form select,
+  .trc-quick-booking-form input,.trc-quick-booking-form select,
+  .trc-menu-search input { font-size:16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html, :where(*) { scroll-behavior:auto!important; }
+  :where(*) { animation-duration:.01ms!important; transition-duration:.01ms!important; }
+}

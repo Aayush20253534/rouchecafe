@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { waLink } from "@/lib/site";
 
-/** Shared design primitives. CSS classes live in globals.css until design migration. */
 export function Pill({ children, className = "" }: { children: ReactNode; className?: string }) {
   return <span className={["section-pill", className].filter(Boolean).join(" ")}>{children}</span>;
 }
@@ -17,12 +17,34 @@ export function SectionHeading({ eyebrow, title }: { eyebrow: string; title: str
   );
 }
 
+/**
+ * Image optimization is handled by Next.js and Vercel.
+ * The explicit dimensions reserve a stable aspect ratio for card previews,
+ * while CSS may override width/height for decorative hero crops.
+ */
 export function Photo({
-  src, alt, className = "", loading = "lazy",
+  src, alt, className = "", loading = "lazy", sizes = "(max-width: 680px) 95vw, (max-width: 1100px) 48vw, 33vw",
 }: {
-  src: string; alt: string; className?: string; loading?: "eager" | "lazy";
+  src: string;
+  alt: string;
+  className?: string;
+  loading?: "eager" | "lazy";
+  sizes?: string;
 }) {
-  return <img src={src} alt={alt} className={className} loading={loading} referrerPolicy="no-referrer" />;
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      className={className}
+      width={1200}
+      height={900}
+      sizes={sizes}
+      priority={loading === "eager"}
+      loading={loading === "eager" ? undefined : "lazy"}
+      decoding="async"
+      referrerPolicy="no-referrer"
+    />
+  );
 }
 
 export function Hero({
@@ -40,7 +62,14 @@ export function Hero({
         <p>{description}</p>
         {children && <div className="hero-actions">{children}</div>}
       </div>
-      <div className="hero-image"><Photo src={image} alt="Café atmosphere" loading="eager" /></div>
+      <div className="hero-image">
+        <Photo
+          src={image}
+          alt="Illustrative café atmosphere"
+          loading="eager"
+          sizes="(max-width: 680px) 100vw, (max-width: 1100px) 70vw, 65vw"
+        />
+      </div>
     </section>
   );
 }
