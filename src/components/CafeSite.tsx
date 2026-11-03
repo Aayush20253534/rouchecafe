@@ -19,6 +19,7 @@ import { AboutPage } from "@/components/pages/AboutPage";
 import { MenuPage } from "@/components/pages/MenuPage";
 import { CartPage } from "@/components/pages/CartPage";
 import { CheckoutPage } from "@/components/pages/CheckoutPage";
+import { ReservationPage } from "@/components/pages/ReservationPage";
 import { parseStoredCart, updateCartQuantity } from "@/lib/cart-storage";
 import { cartItemCount } from "@/lib/menu-utils";
 import { Pill, SectionHeading, Photo, Hero, FeatureStrip, OpenWhatsApp, ButtonLink } from "@/components/ui/CafePrimitives";
@@ -60,22 +61,6 @@ function Gallery(){
       <div className="gallery-cta"><h2>Create Your Own Moments at TRC</h2><p>From casual meetups to special celebrations, The Rouché Café is a place to make memories.</p><ButtonLink href="/reservation">BOOK A TABLE <ArrowRight size={16}/></ButtonLink></div>
     </section>
     {focus&&<div className="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged gallery photo" onClick={()=>setFocus(null)}><button aria-label="Close image" onClick={()=>setFocus(null)}><X size={25}/></button><Photo src={focus} alt="Enlarged café gallery image"/></div>}
-  </>;
-}
-const reservationTimes=["08:00 AM","08:30 AM","09:00 AM","09:30 AM","10:00 AM","10:30 AM","11:00 AM","11:30 AM","12:00 PM","12:30 PM","01:00 PM","01:30 PM","02:00 PM","02:30 PM","03:00 PM","03:30 PM","04:00 PM","04:30 PM","05:00 PM","05:30 PM","06:00 PM","06:30 PM","07:00 PM","07:30 PM","08:00 PM","08:30 PM","09:00 PM"];
-function Reservation(){
-  const [name,setName]=useState(""); const [phone,setPhone]=useState(""); const [date,setDate]=useState(""); const [time,setTime]=useState(""); const [guests,setGuests]=useState("2"); const [occasion,setOccasion]=useState(""); const [notes,setNotes]=useState("");
-  function submit(e:FormEvent){e.preventDefault();openWa(["Hello The Rouché Café, I'd like to request a table reservation.","Name: "+name,"Phone: "+phone,"Date: "+date,"Time: "+time,"Guests: "+guests,"Occasion: "+(occasion||"Not specified"),"Special requests: "+(notes||"None"),"Please confirm availability."].join("\n"));}
-  return <>
-    <Hero eyebrow="Reserve Your Table" title="Book My Table" description="Planning a casual meet-up, work session, birthday celebration, or a special evening? Request your table in advance and enjoy a seamless experience." image={PHOTOS.interior}>
-      <div className="hero-highlights"><span><CalendarDays/> Quick & Easy</span><span><CheckCircle2/> Direct Enquiry</span><span><MessageCircle/> Via WhatsApp</span></div>
-    </Hero>
-    <section className="section page-width reservation-layout"><div className="reservation-photos"><Photo src={PHOTOS.interior2} alt="Café seating area"/><div className="occasions"><span className="script">Perfect For</span><div><span><CakeSlice/> Birthday Celebrations</span><span><Users/> Meetups & Hangouts</span><span><BookOpen/> Work Sessions</span><span><Gift/> Special Occasions</span></div></div></div>
-      <form className="form-card" onSubmit={submit}><Pill>TABLE BOOKING</Pill><h2>Reserve Your Table</h2><p>Fill in your details and we&apos;ll confirm your booking with you on WhatsApp.</p><div className="form-two"><label>Full Name *<input required value={name} onChange={e=>setName(e.target.value)} placeholder="Your full name"/></label><label>Phone Number *<input required inputMode="tel" minLength={10} value={phone} onChange={e=>setPhone(e.target.value)} placeholder="+91 ..."/></label><label>Date *<input required type="date" min={new Date().toLocaleDateString("en-CA")} value={date} onChange={e=>setDate(e.target.value)}/></label><label>Time *<select required value={time} onChange={e=>setTime(e.target.value)}><option value="">Select time</option>{reservationTimes.map(t=><option key={t}>{t}</option>)}</select></label></div>
-      <label>Number of Guests *<select required value={guests} onChange={e=>setGuests(e.target.value)}>{Array.from({length:20},(_,i)=><option key={i} value={i+1}>{i+1} {i?"Guests":"Guest"}</option>)}</select></label><label>Occasion (optional)<select value={occasion} onChange={e=>setOccasion(e.target.value)}><option value="">Select occasion</option>{["Casual Visit","Birthday","Anniversary","Work Meeting","Friends & Family","Other"].map(t=><option key={t}>{t}</option>)}</select></label><label>Special Requests (optional)<textarea rows={4} value={notes} onChange={e=>setNotes(e.target.value)} placeholder="Birthday setup, seating preference, etc."/></label>
-      <button className="btn btn-green full" type="submit"><MessageCircle size={19}/> REQUEST TABLE ON WHATSAPP <ArrowRight size={17}/></button><small className="form-info"><Info size={16}/> A request is not a confirmed reservation. The café will confirm availability directly.</small></form></section>
-      <section className="page-width occasion-strip"><div><Armchair/> Cozy & Aesthetic Ambience</div><div><UtensilsCrossed/> Food & Beverages</div><div><Users/> Great for Groups & Events</div><div><MapPin/> Prayagraj</div></section>
-      <section className="page-width celebration-banner" style={{backgroundImage:"linear-gradient(90deg,rgba(0,48,29,.93),rgba(0,48,29,.86)),url("+PHOTOS.coffee+")"}}><span className="script">Celebrate Your Special Moments at The Rouché Café</span><p>From birthdays to small gatherings, we make every occasion a little more special.</p></section>
   </>;
 }
 function Contact(){
@@ -135,7 +120,7 @@ export default function CafeSite() {
     home: <HomePage />,
     about: <AboutPage />,
     menu: <MenuPage add={add} cart={cart} change={change} />,
-    reservation: <Reservation />,
+    reservation: <ReservationPage />,
     gallery: <Gallery />,
     contact: <Contact />,
     cart: <CartPage cart={cart} change={change} clear={clear} add={add} />,
