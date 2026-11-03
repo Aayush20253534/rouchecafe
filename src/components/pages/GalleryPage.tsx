@@ -74,7 +74,7 @@ export function GalleryPage() {
           eyebrow="Our Gallery"
           title="A Glimpse of The Rouché Café"
           description="Explore the atmosphere, flavours and special moments that make café visits worth remembering."
-          image={PHOTOS.cafe}
+          image={PHOTOS.galleryHero}
         />
       </div>
 
