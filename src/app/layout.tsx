@@ -3,6 +3,7 @@ import "./tailwind.css";
 import "./tokens.css";
 import "./globals.css";
 import "./home-about.css";
+import "./menu.css";
 
 export const metadata: Metadata = {
   title: {

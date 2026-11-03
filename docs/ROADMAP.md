@@ -3,7 +3,7 @@
 1. **Project setup and architecture** — App Router, strict TypeScript, Tailwind utility integration, shared configuration, route validation, CI, documentation.
 2. **Design system and shared UI (implemented)** — colors, typography, reusable visual components, mobile navigation, header and footer refinement.
 3. **Home and About (implemented)** — reproduce the supplied mockups using confirmed branding and visuals.
-4. **Menu and product system** — install the owner's actual menu and product imagery; search/filter/cart presentation.
+4. **Menu and product system (implemented with demo data)** — responsive menu, categories, search, dietary/bestseller filters, product quantity controls, favourites, and live cart preview. Replace illustrative food/menu data when received.
 5. **Cart, checkout and WhatsApp orders** — finalize approved payment and fulfilment rules and order handoff.
 6. **Reservations** — date/time/party-size form and WhatsApp confirmation request.
 7. **Gallery, blog and contact** — client-provided images, blog content, map and enquiries.

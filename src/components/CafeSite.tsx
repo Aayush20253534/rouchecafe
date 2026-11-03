@@ -16,6 +16,7 @@ import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { HomePage } from "@/components/pages/HomePage";
 import { AboutPage } from "@/components/pages/AboutPage";
+import { MenuPage } from "@/components/pages/MenuPage";
 import { Pill, SectionHeading, Photo, Hero, FeatureStrip, OpenWhatsApp, ButtonLink } from "@/components/ui/CafePrimitives";
 
 type Cart = Record<string, number>;
@@ -29,28 +30,6 @@ function ProductCard({item,add,compact=false}:{item:MenuItem;add:(id:string)=>vo
 }
 const openWa=(message:string)=>window.open(waLink(message),"_blank","noopener,noreferrer");
 
-function MenuPage({add,cart,change}:{add:(id:string)=>void;cart:Cart;change:(id:string,diff:number)=>void}) {
-  const [category,setCategory]=useState("All"); const [filter,setFilter]=useState("All"); const [query,setQuery]=useState("");
-  const matches=menu.filter(item=>(category==="All"||item.category===category)&&(filter==="All"||(filter==="Bestseller"&&item.bestseller)||(filter==="Veg"&&item.veg)||(filter==="Non-Veg"&&!item.veg))&&(item.name+" "+item.description).toLowerCase().includes(query.toLowerCase()));
-  const visibleCats=category==="All"?categories:[category];
-  return <>
-    <Hero eyebrow="Our Menu" title="Explore Our Signature Menu" description="A delightful selection of artisan coffee, freshly prepared meals, and irresistible desserts." image={PHOTOS.hero}><ButtonLink href="#browse">BROWSE OUR MENU <ArrowRight size={17}/></ButtonLink><ButtonLink href="/reservation" light>DINE AT CAFE <Coffee size={17}/></ButtonLink></Hero>
-    <FeatureStrip features={[{icon:<Truck/>,title:"ORDER ONLINE",desc:"WhatsApp ordering after menu confirmation"},{icon:<ShoppingBag/>,title:"TAKEAWAY",desc:"Pick up at your convenience"},{icon:<UtensilsCrossed/>,title:"DINE IN",desc:"Enjoy the café experience"},{icon:<Leaf/>,title:"FRESH & QUALITY",desc:"Thoughtfully prepared favourites"}]}/>
-    <section className="section page-width" id="browse"><SectionHeading eyebrow="OUR MENU" title="Browse & Order Your Favourites"/>
-      {CAFE.demoMenu&&<div className="demo-banner"><Info size={19}/><div><strong>Menu preview only.</strong> These dishes and prices are taken from the design mockups, not a confirmed café menu. WhatsApp food-order submission stays disabled until the actual menu is supplied.</div></div>}
-      <div className="menu-toolbar"><div className="search-box"><Search size={18}/><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search for dishes, coffee, pasta..." aria-label="Search menu"/></div><div className="filter-pills">{["All","Bestseller","Veg","Non-Veg"].map(f=><button className={filter===f?"selected":""} onClick={()=>setFilter(f)} key={f}>{f}</button>)}</div></div>
-      <div className="menu-layout"><aside className="category-panel"><div className="categories">{["All",...categories].map((cat,i)=><button key={cat} onClick={()=>setCategory(cat)} className={category===cat?"active":""}><span className="cat-icon">{i===0?<Sparkles size={17}/>:i===1?<Coffee size={17}/>:i===2?<CakeSlice size={17}/>:i===3?<Flame size={17}/>:i===4?<UtensilsCrossed size={17}/>:i===5?<ChefHat size={17}/>:i===6?<Sandwich size={17}/>:<Gift size={17}/>}</span>{cat}</button>)}</div><div className="combo-promo"><span className="script">Coffee Combos</span><p>Explore café favourites and pair your perfect treat.</p><Link href="/reservation">Dine With Us <ArrowRight size={14}/></Link></div></aside>
-      <div className="menu-products">{matches.length===0?<div className="empty-state">No items match your filters.</div>:visibleCats.map(cat=>{const entries=matches.filter(x=>x.category===cat);return entries.length?<section className="menu-category" key={cat}><h3><Coffee size={20}/> {cat}</h3><div className="product-grid">{entries.map(item=><ProductCard key={item.id} item={item} add={add}/>)}</div></section>:null;})}</div>
-      <MiniCart cart={cart} change={change}/></div>
-    </section>
-  </>;
-}
-function MiniCart({cart,change}:{cart:Cart;change:(id:string,diff:number)=>void}) {
-  const entries=menu.filter(x=>(cart[x.id]||0)>0); const total=entries.reduce((s,x)=>s+x.price*(cart[x.id]||0),0);
-  return <aside className="mini-cart"><h3><ShoppingBasketIcon/> Your Cart ({entries.reduce((s,x)=>s+(cart[x.id]||0),0)})</h3>{entries.length===0?<p className="empty-cart-msg">Your bag is empty. Add something delicious.</p>:<div className="mini-cart-items">{entries.map(x=><div key={x.id}><Photo src={x.image} alt={x.name}/><div><strong>{x.name}</strong><small>{money(x.price)} × {cart[x.id]}</small><div className="qty"><button onClick={()=>change(x.id,-1)} aria-label="Decrease"><Minus size={13}/></button>{cart[x.id]}<button onClick={()=>change(x.id,1)} aria-label="Increase"><Plus size={13}/></button></div></div></div>)}</div>}
-    <div className="mini-total"><span>Subtotal</span><b>{money(total)}</b></div><Link className="btn btn-green full" href="/cart">VIEW YOUR CART <ArrowRight size={17}/></Link><div className="whatsapp-hint"><MessageCircle size={25}/><div><strong>WhatsApp ordering</strong><small>Complete your details and send your order once the verified menu is live.</small></div></div></aside>;
-}
-function ShoppingBasketIcon(){return <ShoppingBag size={22}/>;}
 const galleryEntries = [
   {image:PHOTOS.interior,type:"Ambience",alt:"Café interior and seating"},
   {image:PHOTOS.cappuccino,type:"Beverages",alt:"Fresh café coffee"},
@@ -142,7 +121,7 @@ export default function CafeSite() {
   useEffect(()=>{if(hydrated)localStorage.setItem("rouche-cart",JSON.stringify(cart));},[cart,hydrated]);
   useEffect(()=>{if(toast){const timer=setTimeout(()=>setToast(""),2200);return()=>clearTimeout(timer);}},[toast]);
   const change=(id:string,diff:number)=>setCart(c=>{const n=Math.max(0,Math.min(99,(c[id]||0)+diff));const out={...c};if(n===0)delete out[id];else out[id]=n;return out;});
-  const add=(id:string)=>{change(id,1);const item=menu.find(x=>x.id===id);setToast(item?item.name+" added to cart":"Item added");};
+  const add=(id:string,quantity=1)=>{change(id,quantity);const item=menu.find(x=>x.id===id);setToast(item?(quantity>1?quantity+" × ":"")+item.name+" added to cart":"Item added");};
   const clear=()=>setCart({});
   const count=useMemo(()=>Object.values(cart).reduce((s,x)=>s+x,0),[cart]);
   const route=(pathname||"/").split("/").filter(Boolean)[0]||"home";

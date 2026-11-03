@@ -49,3 +49,10 @@ The Home and About pages now live in \`src/components/pages/HomePage.tsx\` and \
 \`src/components/pages/QuickTableRequest.tsx\` owns the homepage WhatsApp booking form. It includes basic required fields and local-date validation; café staff must confirm availability manually. The full reservation route remains unchanged.
 
 \`src/components/ui/CafeDecorations.tsx\` supplies self-contained botanical and coffee-bean SVG decorations. Scoped styles in \`src/app/home-about.css\` reproduce the user-provided Home and About reference layouts and adapt them to tablet/mobile. Supplied photography has **not** yet been provided: stock previews still come from the centrally configured \`PHOTOS\` entries in \`src/lib/site.ts\`. Sample menu prices are not authentic; the homepage explicitly labels them illustrative.
+
+
+## Phase 4: Menu and product system
+
+The menu page now lives in \`src/components/pages/MenuPage.tsx\`; product cards and the desktop cart preview are in \`src/components/menu/\`. Data has been moved to \`src/data/menu.ts\` and photos to \`src/lib/photos.ts\`; imports from \`src/lib/site.ts\` continue to work through re-exports. Filtering and subtotals are pure functions in \`src/lib/menu-utils.ts\`, covered by \`tests/menu-utils.test.ts\`.
+
+The cart's existing localStorage workflow remains unchanged and is shared with Cart and Checkout. The new menu supports a responsive phone cart dock, selected product quantities, a client-only favourite list, filter resets, category states, and empty search results. See \`docs/MENU_SYSTEM.md\`.
