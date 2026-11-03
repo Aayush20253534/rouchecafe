@@ -10,3 +10,8 @@ export const MAIN_NAVIGATION = [
   { href: "/blog", label: "Blog" },
   { href: "/contact", label: "Contact" },
 ] as const;
+
+/** Main navbar excludes supplementary pages; the footer retains all routes. */
+export const HEADER_NAVIGATION = MAIN_NAVIGATION.filter(
+  ({ href }) => href !== "/reservation" && href !== "/blog"
+);

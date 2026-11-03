@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Armchair, Menu, ShoppingCart, X } from "lucide-react";
 import { BrandLogo } from "@/components/ui/BrandLogo";
-import { MAIN_NAVIGATION } from "@/lib/navigation";
+import { HEADER_NAVIGATION } from "@/lib/navigation";
 
 export function SiteHeader({ cartCount }: { cartCount: number }) {
   const pathname = usePathname();
@@ -69,7 +69,7 @@ export function SiteHeader({ cartCount }: { cartCount: number }) {
           className={menuOpen ? "nav-links open" : "nav-links"}
           aria-label="Primary navigation"
         >
-          {MAIN_NAVIGATION.map(({ href, label }) => {
+          {HEADER_NAVIGATION.map(({ href, label }) => {
             const active = pathname === href;
             return (
               <Link key={href} href={href}
