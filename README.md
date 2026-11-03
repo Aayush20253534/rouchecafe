@@ -6,7 +6,7 @@ Responsive café website built with Next.js 15, React 19, TypeScript and custom 
 
 - / — home, hero, signature menu preview, gallery and reservation preview
 - /about — brand story and values
-- /menu — searchable, filterable menu with categories and cart preview
+- /menu — responsive menu with category navigation, searchable items, dietary and bestseller filters, favourite dishes, quantity selection, and live cart preview
 - /reservation — table reservation request via WhatsApp
 - /gallery — category filters and photo lightbox
 - /contact — WhatsApp enquiry form and Google Maps directions
@@ -38,9 +38,9 @@ Reservation and contact forms open a prefilled WhatsApp message. A reservation r
 
 ## Before enabling live ordering
 
-1. Replace the sample menu array in src/lib/site.ts with the café's real dishes, prices, descriptions, categories, dietary flags and images.
-2. Confirm accepted order hours, fulfilment modes, delivery coverage and delivery/packing fees. Add final fee calculation where appropriate.
-3. Replace temporary stock photo URLs in PHOTOS with licensed or café-supplied photography. Images can be placed in public/images and referenced like /images/coffee.webp.
+1. Replace the demo menu in src/data/menu.ts with the café's real dishes, prices, descriptions, categories, dietary flags and images. See docs/MENU_SYSTEM.md.
+2. Confirm accepted order hours, fulfilment modes, delivery coverage and delivery/packing fees. Do not display invented fixed fees.
+3. Replace temporary stock photo URLs in src/lib/photos.ts with licensed or café-supplied photography. Images can be placed in public/images and referenced like /images/coffee.webp.
 4. After the verified menu is tested, set CAFE.demoMenu to false. Until then, carts and checkout are for preview and food orders are deliberately disabled.
 5. Set NEXT_PUBLIC_SITE_URL to the production domain to configure the sitemap.
 
@@ -54,6 +54,10 @@ The cart uses localStorage, not a database. There is no payment gateway. The caf
 
 ## CI and deployment
 
-GitHub Actions runs TypeScript and production build checks on pushes to main and pull requests.
+GitHub Actions runs TypeScript, menu-logic tests and production build checks on pushes to main and pull requests.
 
 Import this repository into Vercel as a Next.js project. No database or server secrets are required for the current static/WhatsApp-first version.
+
+## Menu system
+
+Phase 4 introduces `src/data/menu.ts`, `src/lib/menu-utils.ts`, `src/components/pages/MenuPage.tsx`, reusable menu cards, responsive cart previews and filter tests. See [Menu system details](docs/MENU_SYSTEM.md). The current menu remains illustrative until replaced with verified client data.
