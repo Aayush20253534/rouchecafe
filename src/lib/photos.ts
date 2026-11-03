@@ -3,6 +3,7 @@
 const p = (id: string, w=1200) => "https://images.unsplash.com/" + id + "?auto=format&fit=crop&w=" + w + "&q=82";
 export const PHOTOS = {
   hero: "/images/rouche-cafe-hero.png",
+  galleryHero: "/images/rouche-gallery-hero.jpg",
   interior: p("photo-1517248135467-4c7edcad34c4",1400),
   interior2: p("photo-1554118811-1e0d58224f24",1200),
   cafe: p("photo-1442512595331-e89e73853f31",1400),
@@ -21,4 +22,3 @@ export const PHOTOS = {
   fries: p("photo-1573080496219-bb080dd4f877",800),
   group: p("photo-1528605248644-14dd04022da1",1200)
 };
-
