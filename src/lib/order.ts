@@ -1,6 +1,7 @@
 import type { MenuItem } from "@/data/menu";
 import type { Cart } from "@/types/cart";
 import { cartEntries, cartSubtotal } from "@/lib/menu-utils";
+import { todayAtCafeISO, availablePreferenceSlots, RESERVATION_TIMES } from "@/lib/reservations";
 
 export type FulfilmentType = "Pickup" | "Delivery";
 
@@ -26,24 +27,13 @@ export const EMPTY_CHECKOUT_DETAILS: CheckoutDetails = {
   notes: "",
 };
 
-/** Browser-local calendar date, not UTC. Avoids accidentally rejecting today in India. */
+/** Café-local date in IST (not the visitor's device timezone). */
 export function todayLocalISO(date: Date = new Date()): string {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return year + "-" + month + "-" + day;
+  return todayAtCafeISO(date);
 }
 
-/** Time preference is not a confirmed kitchen opening slot. */
-export const ORDER_TIME_SLOTS = [
-  "08:00 AM", "08:30 AM", "09:00 AM", "09:30 AM",
-  "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM",
-  "12:00 PM", "12:30 PM", "01:00 PM", "01:30 PM",
-  "02:00 PM", "02:30 PM", "03:00 PM", "03:30 PM",
-  "04:00 PM", "04:30 PM", "05:00 PM", "05:30 PM",
-  "06:00 PM", "06:30 PM", "07:00 PM", "07:30 PM",
-  "08:00 PM", "08:30 PM", "09:00 PM",
-] as const;
+/** Time slots are preferences and do not represent live service availability. */
+export const ORDER_TIME_SLOTS = RESERVATION_TIMES;
 
 /** Validates customer information and the requested fulfilment details. */
 export function validateCheckout(
@@ -51,6 +41,7 @@ export function validateCheckout(
   cart: Cart,
   items: readonly MenuItem[],
   today: string = todayLocalISO(),
+  now: Date = new Date(),
 ): string[] {
   const errors: string[] = [];
   if (cartEntries(items, cart).length === 0) errors.push("Add a menu item before checking out.");
@@ -68,6 +59,9 @@ export function validateCheckout(
   }
   if (!details.time || !ORDER_TIME_SLOTS.some((slot) => slot === details.time)) {
     errors.push("Select a preferred time.");
+  } else if (details.date === today && today === todayAtCafeISO(now) &&
+             !availablePreferenceSlots(details.date, now).includes(details.time)) {
+    errors.push("Select a future preferred time for today.");
   }
   return errors;
 }

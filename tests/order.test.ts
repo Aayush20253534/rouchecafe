@@ -54,3 +54,17 @@ test("pickup request never includes delivery address, even with stale form data"
 test("empty cart cannot produce a WhatsApp order", () => {
   assert.throws(() => formatWhatsAppOrder(valid, {}, menu), /empty/);
 });
+
+
+test("checkout dates are based on café IST, not browser timezone", () => {
+  assert.equal(todayLocalISO(new Date("2026-11-03T18:29:59.000Z")), "2026-11-03");
+  assert.equal(todayLocalISO(new Date("2026-11-03T18:30:00.000Z")), "2026-11-04");
+});
+
+test("same-day checkout rejects times already past in Prayagraj", () => {
+  const current = new Date("2026-11-03T13:15:00.000Z"); // 18:45 IST
+  const selected = { ...valid, date: "2026-11-03", time: "06:30 PM" };
+  assert.ok(validateCheckout(selected, { cappuccino: 1 }, menu, "2026-11-03", current)
+    .some((message) => message.includes("future preferred time")));
+  assert.deepEqual(validateCheckout({ ...selected, time: "07:00 PM" }, { cappuccino: 1 }, menu, "2026-11-03", current), []);
+});

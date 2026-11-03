@@ -8,6 +8,7 @@ import {
   ShieldCheck, Truck, Users, Leaf, Coffee,
 } from "lucide-react";
 import { CAFE, menu, PHOTOS, waLink } from "@/lib/site";
+import { availablePreferenceSlots } from "@/lib/reservations";
 import type { Cart } from "@/types/cart";
 import {
   EMPTY_CHECKOUT_DETAILS,
@@ -169,14 +170,14 @@ export function CheckoutPage({ cart }: Props) {
                       Date <span aria-hidden="true">*</span>
                       <input
                         required type="date" min={today} name="date"
-                        value={details.date} onChange={(event) => field("date", event.target.value)}
+                        value={details.date} onChange={(event) => { setDetails((current) => ({ ...current, date: event.target.value, time: "" })); setErrors([]); setConsent(false); }}
                       />
                     </label>
                     <label>
                       Time <span aria-hidden="true">*</span>
                       <select required name="time" value={details.time} onChange={(event) => field("time", event.target.value)}>
                         <option value="">Select preferred time</option>
-                        {ORDER_TIME_SLOTS.map((slot) => <option value={slot} key={slot}>{slot}</option>)}
+                        {(details.date === today ? availablePreferenceSlots(details.date) : ORDER_TIME_SLOTS).map((slot) => <option value={slot} key={slot}>{slot}</option>)}
                       </select>
                     </label>
                   </div>

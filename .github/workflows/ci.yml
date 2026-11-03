@@ -22,3 +22,5 @@ jobs:
         run: npm test
       - name: Production build
         run: npm run build
+      - name: Route and SEO smoke tests
+        run: npm run smoke
